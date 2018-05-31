@@ -1593,7 +1593,10 @@ Class H5PExport {
     );
 
     // Add dependencies to h5p
+    $numDependencies = count($content['dependencies']);
+    $numProcessed = 0;
     foreach ($content['dependencies'] as $library) {
+      $numProcessed++;
       try {
         $exportFolder = NULL;
 
@@ -1613,7 +1616,7 @@ Class H5PExport {
         }
 
         // Export required libraries
-        $this->h5pC->fs->exportLibrary($library, $tmpPath, $exportFolder);
+        $this->h5pC->fs->exportLibrary($library, $tmpPath, $exportFolder, $numDependencies === $numProcessed);
       }
       catch (Exception $e) {
         $this->h5pF->setErrorMessage($this->h5pF->t($e->getMessage()), 'failed-creating-export-file');
