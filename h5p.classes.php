@@ -596,6 +596,16 @@ interface H5PFrameworkInterface {
    *  containing the new content type cache that should replace the old one.
    */
   public function replaceContentTypeCache($contentTypeCache);
+
+  /**
+   * Framework may implement additional validations for library
+   *
+   * @param object $mainH5pData H5P Data from library.json
+   *
+   * @return object An object with a 'valid' that returns true if validation passes,
+   * and an optional 'message' and 'code' property to be displayed if validation fails.
+   */
+  public function validateLibrary($mainH5pData);
 }
 
 /**
@@ -840,6 +850,25 @@ class H5PValidator {
         $valid = FALSE;
       }
     }
+    if ($mainH5pData) {
+      $frameworkValidation = $this->h5pF->validateLibrary($mainH5pData);
+      if (!$frameworkValidation->valid) {
+        $message = $this->h5pF->t('Validation of the main library failed.');
+        $code = null;
+
+        if (isset($frameworkValidation->message)) {
+          $message = $frameworkValidation->message;
+        }
+
+        if (isset($frameworkValidation->code)) {
+          $code = $frameworkValidation->code;
+        }
+
+        $this->h5pF->setErrorMessage($message, $code);
+        $valid = FALSE;
+      }
+    }
+
     if ($valid) {
       if ($upgradeOnly) {
         // When upgrading, we only add the already installed libraries, and
@@ -1774,7 +1803,7 @@ class H5PCore {
   
   public static $coreApi = array(
     'majorVersion' => 1,
-    'minorVersion' => 16
+    'minorVersion' => 17
   );
   public static $styles = array(
     'styles/h5p.css',
