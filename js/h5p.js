@@ -1941,10 +1941,16 @@ H5P.createTitle = function (rawTitle, maxLength) {
   /**
    * Get crossorigin option that is set for site. Usefull for setting crossorigin policy for elements.
    *
+   * @param {string} url URL is checked to see if crossorigin settings should be applied for it
+   *
    * @returns {string|null} Returns the string that should be set as crossorigin policy for elements or null if
    * no policy is set.
    */
   H5P.getCrossOrigin = function (url) {
+    if (!url) {
+      return null;
+    }
+
     var crossorigin = H5PIntegration.crossorigin;
     var urlRegex = H5PIntegration.crossoriginRegex;
 
