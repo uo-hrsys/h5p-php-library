@@ -1,4 +1,10 @@
-This folder contains the general H5P library. The files within this folder are not specific to any framework.
+>
+> This folder contains a modified version of the H5P library.
+> It won't work if you use it
+>
+
+
+he files within this folder are not specific to any framework.
 
 Any interaction with an LMS, CMS or other frameworks is done through interfaces. Platforms need to implement
 the H5PFrameworkInterface(in h5p.classes.php) and also do the following:
